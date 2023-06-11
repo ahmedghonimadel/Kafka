@@ -25,6 +25,8 @@ public class KafkaProducerWithOptions {
         kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 "org.apache.kafka.common.serialization.StringSerializer");
 
+        kafkaProps.setProperty("batch.size","100");
+        kafkaProps.setProperty("partitioner.class",RoundRobinPartitioner.class.getName());
         //Set ACKS to all so all replicas needs to acknolwedge
         kafkaProps.put(ProducerConfig.ACKS_CONFIG, "all");
 
@@ -34,6 +36,9 @@ public class KafkaProducerWithOptions {
 
         //Create a Kafka producer from configuration
         KafkaProducer optionsProducer = new KafkaProducer(kafkaProps);
+
+        //TODO: for each loop example
+
 
         //Use a Random number to generate message keys
         Random randomKey = new Random();

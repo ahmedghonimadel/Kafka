@@ -1,9 +1,6 @@
 package com.learning.kafkascalableapps.chapter5;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -41,6 +38,14 @@ public class ScalableConsumer {
 
         //Set auto commit to false
         kafkaProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+
+        //consumer group
+        kafkaProps.setProperty("group.id","group.java");
+
+        // re-balancing partitions when a new consumer in the same consumer group
+        kafkaProps.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, CooperativeStickyAssignor.class.getName());
+        //kafkaProps.put(ConsumerConfig.GROUP_INSTANCE_ID_CONFIG, CooperativeStickyAssignor.class.getName());   the strategy for static assignment
+
 
         //Create a Consumer
         KafkaConsumer<String, String> simpleConsumer =
